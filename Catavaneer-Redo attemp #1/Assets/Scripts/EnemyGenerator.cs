@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyGenerator : MonoBehaviour
 {
-    [SerializeField] EnemyTypes type = new EnemyTypes();
-
+    [SerializeField] GameObject[] enemyPrefabs = null;
+    [SerializeField] EnemyTypes generatingType = new EnemyTypes();
+    [SerializeField] float generateInterval = 1f;
 }

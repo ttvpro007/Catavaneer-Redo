@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using ViTiet.Library.UnityExtension.Gizmos;
 
 public class CloudGenerator : MonoBehaviour
 {
@@ -67,6 +67,6 @@ public class CloudGenerator : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        GizmosExtended.DrawRectangleBox(transform, width, height, depth, Color.red);
+        GizmosExtended.DrawRectangleBox(transform.position, width, height, depth, Color.red);
     }
 }

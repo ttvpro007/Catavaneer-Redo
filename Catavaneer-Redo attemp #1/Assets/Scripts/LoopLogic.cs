@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public static class LoopLogic
+﻿namespace ViTiet.Library.Generic
 {
-    public static int GetNextLoopIndex(int currentInt, int min, int max)
+    public static class LoopLogic
     {
-        return (currentInt + 1 < max) ? currentInt + 1 : min;
+        public static int GetNextLoopIndex(int currentInt, int min, int max)
+        {
+            return (currentInt + 1 < max) ? currentInt + 1 : min;
+        }
     }
 }
