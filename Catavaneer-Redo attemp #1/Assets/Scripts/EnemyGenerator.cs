@@ -1,35 +1,41 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using ViTiet.Library.UnityExtension.Gizmos;
+using Plane = ViTiet.Library.UnityExtension.Gizmos.Plane;
 
 public class EnemyGenerator : MonoBehaviour
 {
-    [SerializeField] EnemyPrefab[] enemyPrefabs = null;
+    [SerializeField] GameObject[] enemyPrefabs = null;
     [SerializeField] EnemyTypes generatingType = new EnemyTypes();
     [SerializeField] float spawnInterval = 1f;
+    [SerializeField] float spawnAreaWidth = 10f;
+    [SerializeField] float spawnAreaHeigth = 5f;
+    [SerializeField] int gridWidthSegments = 5;
+    [SerializeField] int gridHeigthSegments = 5;
     [SerializeField] bool random = false;
+    public int totalVert;
 
     private void Update()
     {
-        // generate
-        // if random generate randomly
-        // if not random generate default
-        Generate(GetPrefabIndexByType(generatingType), random);
-
+        Generate(random);
     }
 
-    private void Generate(int index, bool isRandom)
+    private void Generate(bool isRandom)
     {
-        if ()
-        Instantiate(enemyPrefabs[index].gameObject);
+        if (!isRandom)
+        {
+            Instantiate(enemyPrefabs[GetPrefabIndexByType(generatingType)].gameObject);
+        }
+        else
+        {
+            Instantiate(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)].gameObject);
+        }
     }
 
     private int GetPrefabIndexByType(EnemyTypes type)
     {
         for (int i = 0; i < enemyPrefabs.Length; i++)
         {
-            if (type == enemyPrefabs[i].type)
+            if (type == enemyPrefabs[i].GetComponent<Enemy>().type)
             {
                 return i;
             }
@@ -39,12 +45,31 @@ public class EnemyGenerator : MonoBehaviour
         return -1;
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        GizmosExtended.DrawWireRectangle2D(transform, spawnAreaWidth, spawnAreaHeigth, Color.white);
 
-}
+        for (int h = 0; h <= gridHeigthSegments; h++)
+        {
+            for (int w = 0; w <= gridWidthSegments; w++)
+            {
+                Gizmos.DrawSphere(GenerateGridPoints(w, h), .2f);
+            }
+        }
 
-[Serializable]
-public class EnemyPrefab
-{
-    public GameObject gameObject;
-    public EnemyTypes type;
+        totalVert = gridWidthSegments * gridHeigthSegments;
+
+        //Gizmos.DrawWireCube(transform.position, new Vector3(spawnAreaWidth, 0, spawnAreaHeigth));
+    }
+
+    private Vector3 GenerateGridPoints(int row, int col)
+    {
+        Vector3 point = transform.position;
+
+        point.x = transform.position.x - spawnAreaWidth / 2 + (spawnAreaWidth / gridWidthSegments * row);
+        point.y = transform.position.y;
+        point.z = transform.position.z - spawnAreaHeigth / 2 + (spawnAreaHeigth / gridHeigthSegments * col);
+
+        return point;
+    }
 }

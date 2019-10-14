@@ -3,9 +3,43 @@ using ViTiet.Library.Generic;
 
 namespace ViTiet.Library.UnityExtension.Gizmos
 {
+    /// <summary>
+    /// Extends Unity Gizmos
+    /// </summary>
     public static class GizmosExtended
     {
-        public static void DrawRectangleBox(Vector3 center, float width, float height, float depth, Color color)
+        /// <summary>
+        /// Draws a 2D rectangle
+        /// </summary>
+        public static void DrawWireRectangle2D(Transform center, float width, float heigth, Color color)
+        {
+            Vector3[] points = new Vector3[4];
+
+            points[0] = new Vector3(center.position.x - width / 2 * Mathf.Cos(Mathf.PI / 180 * center.eulerAngles.y),
+                                    center.position.y,
+                                    center.position.z + heigth / 2 * Mathf.Sin(Mathf.PI / 180 * center.eulerAngles.y));
+
+            //points[1] = new Vector3(center.position.x + width / 2 * Mathf.Cos(Mathf.PI / 180 * center.eulerAngles.y),
+            //                        center.position.y,
+            //                        center.position.z + heigth / 2 * Mathf.Sin(Mathf.PI / 180 * center.eulerAngles.y));
+            //points[2] = new Vector3(center.position.x + width / 2 * Mathf.Cos(Mathf.PI / 180 * center.eulerAngles.y),
+            //                        center.position.y,
+            //                        center.position.z - heigth / 2 * Mathf.Sin(Mathf.PI / 180 * center.eulerAngles.y));
+            //points[3] = new Vector3(center.position.x - width / 2 * Mathf.Cos(Mathf.PI / 180 * center.eulerAngles.y),
+            //                        center.position.y,
+            //                        center.position.z - heigth / 2 * Mathf.Sin(Mathf.PI / 180 * center.eulerAngles.y));
+
+            for (int i = 0; i < 4; i++)
+            {
+                UnityEngine.Gizmos.color = color;
+                UnityEngine.Gizmos.DrawLine(points[i], points[LoopLogic.GetNextLoopIndex(i, 0, 4)]);
+            }
+        }
+
+        /// <summary>
+        /// Draws a 3D rectangle box
+        /// </summary>
+        public static void DrawWireRectangle3D(Vector3 center, float width, float heigth, float depth, Color color)
         {
             UnityEngine.Gizmos.color = color;
             Vector3[] points = new Vector3[8];
@@ -65,11 +99,11 @@ namespace ViTiet.Library.UnityExtension.Gizmos
                      points[i].y = center.y + depth / 2;
                 else points[i].y = center.y - depth / 2;
 
-                points[i].z = center.z - height / 2;
+                points[i].z = center.z - heigth / 2;
 
                 points[i + 4].x = points[i].x;
                 points[i + 4].y = points[i].y;
-                points[i + 4].z = points[i].z + height;
+                points[i + 4].z = points[i].z + heigth;
             }
 
             // draw rear rect
@@ -90,5 +124,83 @@ namespace ViTiet.Library.UnityExtension.Gizmos
                 UnityEngine.Gizmos.DrawLine(points[i], points[i + 4]);
             }
         }
+        
+        /// <summary>
+        /// Draws a 2D ellipse
+        /// </summary>
+        public static void DrawWireEllipse2D(Vector3 center, float diameterA, float diameterB, int segments, Plane plane, Color color)
+        {
+            float segmentAngle = 2 * Mathf.PI / segments;
+            float pointA = 0;
+            float pointB = 0;
+            Vector3 currentPoint = Vector3.zero;
+            Vector3 nextPoint = Vector3.zero;
+            
+            for (int i = 0; i < segments; i++)
+            {
+                pointA = diameterA / 2 * Mathf.Cos(segmentAngle * i);
+                pointB = diameterB / 2 * Mathf.Sin(segmentAngle * i);
+                currentPoint = GetPoint(center, pointA, pointB, plane);
+
+                pointA = diameterA / 2 * Mathf.Cos(segmentAngle * LoopLogic.GetNextLoopIndex(i, 0, segments));
+                pointB = diameterB / 2 * Mathf.Sin(segmentAngle * LoopLogic.GetNextLoopIndex(i, 0, segments));
+                nextPoint = GetPoint(center, pointA, pointB, plane);
+
+                UnityEngine.Gizmos.color = color;
+                UnityEngine.Gizmos.DrawLine(currentPoint, nextPoint);
+            }
+        }
+
+        /// <summary>
+        /// Draws a 3D ellipse
+        /// </summary>
+        public static void DrawWireEllipse3D(Vector3 center, float diameterX, float diameterY, float diameterZ, int segments, Color color)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                // Draw XY
+                DrawWireEllipse2D(center, diameterX, diameterY, segments, Plane.XY, color);
+                // Draw XZ
+                DrawWireEllipse2D(center, diameterX, diameterZ, segments, Plane.XZ, color);
+                // Draw YZ
+                DrawWireEllipse2D(center, diameterY, diameterZ, segments, Plane.YZ, color);
+            }
+        }
+        
+        /// <summary>
+        /// Returns a point on the selected plane related to the center
+        /// </summary>
+        private static Vector3 GetPoint(Vector3 center, float pointA, float pointB, Plane plane)
+        {
+            switch (plane)
+            {
+                case Plane.XY:
+                    return new Vector3(center.x + pointA, center.y + pointB, center.z);
+                case Plane.XZ:
+                    return new Vector3(center.x + pointA, center.y, center.z + pointB);
+                case Plane.YZ:
+                    return new Vector3(center.x, center.y + pointA, center.z + pointB);
+            }
+
+            return new Vector3(center.x, center.y, center.z);
+        }
+
+        /// <summary>
+        /// Draws a symetrical shape based on the number of segments
+        /// </summary>
+        public static void DrawWireSymetricalShape2D(Vector3 center, float diameter, int segments, Plane plane, Color color)
+        {
+            if (segments <= 3) return;
+
+            DrawWireEllipse2D(center, diameter, diameter, segments, plane, color);
+        }
+    }
+
+    /// <summary>
+    /// Plane dimention
+    /// </summary>
+    public enum Plane
+    {
+        XY, XZ, YZ
     }
 }

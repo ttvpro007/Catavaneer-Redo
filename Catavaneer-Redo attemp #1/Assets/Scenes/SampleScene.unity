@@ -518,7 +518,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1500184774}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 83.02, y: 10, z: -242.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -536,9 +536,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dadb4c88c30b4f140943ca9a815eea2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefabs: []
+  enemyPrefabs:
+  - {fileID: 2947312907978511882, guid: bd2ac9a31522dad45beacf63b077b302, type: 3}
+  - {fileID: 2947312907978511882, guid: 02123719f13bb1345a7a2e0342617ea1, type: 3}
+  - {fileID: 2947312907978511882, guid: 79c176f070343a5459d66d129c5789c0, type: 3}
   generatingType: 0
-  generateInterval: 1
+  spawnInterval: 1
+  spawnAreaWidth: 53
+  spawnAreaHeigth: 12
+  gridWidthSegments: 10
+  gridHeigthSegments: 5
+  random: 0
+  totalVert: 50
 --- !u!1 &1513741807
 GameObject:
   m_ObjectHideFlags: 0

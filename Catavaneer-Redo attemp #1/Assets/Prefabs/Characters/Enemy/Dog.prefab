@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 4874438397308205664, guid: f2d60a06628a15d43a470988a79d34aa,
         type: 3}
       propertyPath: m_Name
-      value: Enemy
+      value: Dog
       objectReference: {fileID: 0}
     - target: {fileID: 2139191797930927865, guid: f2d60a06628a15d43a470988a79d34aa,
         type: 3}
@@ -66,6 +66,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3469305452161697359, guid: f2d60a06628a15d43a470988a79d34aa,
+        type: 3}
+      propertyPath: name
+      value: Dog
+      objectReference: {fileID: 0}
+    - target: {fileID: 3469305452161697359, guid: f2d60a06628a15d43a470988a79d34aa,
+        type: 3}
+      propertyPath: type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279402989739220915, guid: f2d60a06628a15d43a470988a79d34aa,
+        type: 3}
+      propertyPath: name
+      value: Dog
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279402989739220915, guid: f2d60a06628a15d43a470988a79d34aa,
+        type: 3}
+      propertyPath: type
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2d60a06628a15d43a470988a79d34aa, type: 3}

@@ -67,6 +67,6 @@ public class CloudGenerator : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        GizmosExtended.DrawRectangleBox(transform.position, width, height, depth, Color.red);
+        GizmosExtended.DrawWireRectangle3D(transform.position, width, height, depth, Color.red);
     }
 }
