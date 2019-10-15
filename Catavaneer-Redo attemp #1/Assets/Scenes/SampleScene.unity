@@ -518,7 +518,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1500184774}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 83.02, y: 10, z: -242.03}
+  m_LocalPosition: {x: 85.05, y: 10, z: -237.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -542,12 +542,11 @@ MonoBehaviour:
   - {fileID: 2947312907978511882, guid: 79c176f070343a5459d66d129c5789c0, type: 3}
   generatingType: 0
   spawnInterval: 1
-  spawnAreaWidth: 53
-  spawnAreaHeigth: 12
-  gridWidthSegments: 10
-  gridHeigthSegments: 5
+  spawnAreaWidth: 10
+  spawnAreaHeigth: 10
+  colum: 5
+  row: 5
   random: 0
-  totalVert: 50
 --- !u!1 &1513741807
 GameObject:
   m_ObjectHideFlags: 0

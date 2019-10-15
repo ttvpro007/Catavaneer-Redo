@@ -9,10 +9,11 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField] float spawnInterval = 1f;
     [SerializeField] float spawnAreaWidth = 10f;
     [SerializeField] float spawnAreaHeigth = 5f;
-    [SerializeField] int gridWidthSegments = 5;
-    [SerializeField] int gridHeigthSegments = 5;
+    //[SerializeField] float spawnAreaDepth = 5f;
+    [SerializeField] int colum = 5;
+    [SerializeField] int row = 5;
+    //[SerializeField] int layer = 5;
     [SerializeField] bool random = false;
-    public int totalVert;
 
     private void Update()
     {
@@ -48,28 +49,9 @@ public class EnemyGenerator : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         GizmosExtended.DrawWireRectangle2D(transform, spawnAreaWidth, spawnAreaHeigth, Color.white);
-
-        for (int h = 0; h <= gridHeigthSegments; h++)
-        {
-            for (int w = 0; w <= gridWidthSegments; w++)
-            {
-                Gizmos.DrawSphere(GenerateGridPoints(w, h), .2f);
-            }
-        }
-
-        totalVert = gridWidthSegments * gridHeigthSegments;
-
-        //Gizmos.DrawWireCube(transform.position, new Vector3(spawnAreaWidth, 0, spawnAreaHeigth));
-    }
-
-    private Vector3 GenerateGridPoints(int row, int col)
-    {
-        Vector3 point = transform.position;
-
-        point.x = transform.position.x - spawnAreaWidth / 2 + (spawnAreaWidth / gridWidthSegments * row);
-        point.y = transform.position.y;
-        point.z = transform.position.z - spawnAreaHeigth / 2 + (spawnAreaHeigth / gridHeigthSegments * col);
-
-        return point;
+        //GizmosExtended.DrawWireRectangle3D(transform, spawnAreaWidth, spawnAreaHeigth, spawnAreaDepth, Color.white);
+        GizmosExtended.GenerateGridPoints(transform, new Vector3(spawnAreaWidth, 0, spawnAreaHeigth), new Vector3(row, 1, colum));
+        //GizmosExtended.DrawWireEllipse2D(transform, 30, 40, 16, Plane.XZ, Color.white);
+        //GizmosExtended.DrawWireEllipse3D(transform, new Vector3(30, 40, 50), 16, Color.white);
     }
 }
