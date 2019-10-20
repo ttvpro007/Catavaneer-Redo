@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using ViTiet.Library.ProceduralGenerator.Helper;
 using ViTiet.Library.UnityExtension.Gizmos;
 
 public class CloudGenerator : MonoBehaviour
@@ -10,36 +11,25 @@ public class CloudGenerator : MonoBehaviour
     [SerializeField] float height = 100;
     [SerializeField] float depth = 10;
     [SerializeField] GameObject[] cloudTypes = null;
-    BorderInfo borderInfo = new BorderInfo();
     
     private void Start()
     {
-        InitiateBorderInfo();
         GenerateCloud();
-    }
-
-    private void InitiateBorderInfo()
-    {
-        borderInfo.xMin = transform.position.x - width / 2;
-        borderInfo.xMax = transform.position.x + width / 2;
-        borderInfo.yMin = transform.position.y - depth / 2;
-        borderInfo.yMax = transform.position.y + depth / 2;
-        borderInfo.zMin = transform.position.z - height / 2;
-        borderInfo.zMax = transform.position.z + height / 2;
     }
 
     private void GenerateCloud()
     {
+        BorderInfo borderInfo = new BorderInfo(transform.position, width, height, depth);
         Vector3 position;
         GameObject cloud;
         float speed;
 
         for (int i = 0; i < cloudNumber; i++)
         {
-            position = RandomPosition();
+            position = RandomPosition(borderInfo);
             speed = RandomFloat(cloudMinSpeed, cloudMaxSpeed);
 
-            cloud = Instantiate(cloudTypes[RandomInt(0, cloudTypes.Length)], position, Quaternion.identity);
+            cloud = Instantiate(cloudTypes[RandomInt(0, cloudTypes.Length)], position, transform.rotation);
             cloud.AddComponent<Cloud>().Initiate(speed, borderInfo);
         }
     }
@@ -54,7 +44,7 @@ public class CloudGenerator : MonoBehaviour
         return Random.Range(min, max);
     }
 
-    private Vector3 RandomPosition()
+    private Vector3 RandomPosition(BorderInfo borderInfo)
     {
         float x, y, z;
 

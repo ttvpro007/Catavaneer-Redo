@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using ViTiet.Library.ProceduralGenerator.Helper;
 
 public class Cloud : MonoBehaviour
 {

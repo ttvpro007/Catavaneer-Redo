@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using ViTiet.Library.UnityExtension.Gizmos;
-using Plane = ViTiet.Library.UnityExtension.Gizmos.Plane;
+using ViTiet.Library.ProceduralGenerator.Helper;
+using Plane = ViTiet.Library.UnityExtension.Math.Plane;
 
 public class EnemyGenerator : MonoBehaviour
 {
@@ -8,28 +9,41 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField] EnemyTypes generatingType = new EnemyTypes();
     [SerializeField] float spawnInterval = 1f;
     [SerializeField] float spawnAreaWidth = 10f;
-    [SerializeField] float spawnAreaHeigth = 5f;
-    //[SerializeField] float spawnAreaDepth = 5f;
+    [SerializeField] float spawnAreaHeight = 5f;
     [SerializeField] int colum = 5;
     [SerializeField] int row = 5;
-    //[SerializeField] int layer = 5;
     [SerializeField] bool random = false;
+    Vector3[] spawnPoints;
+    GameObject[] enemies;
+
+    private void Start()
+    {
+        spawnPoints = GeneratorHelper.GenerateGridPoints(transform, spawnAreaWidth, spawnAreaHeight, 0, row, colum, 1);
+        enemies = Generate(random);
+    }
 
     private void Update()
     {
-        Generate(random);
+        //Generate(random);
     }
 
-    private void Generate(bool isRandom)
+    private GameObject[] Generate(bool isRandom)
     {
-        if (!isRandom)
+        GameObject[] gameObjects = new GameObject[spawnPoints.Length];
+
+        for (int i = 0; i < spawnPoints.Length; i++)
         {
-            Instantiate(enemyPrefabs[GetPrefabIndexByType(generatingType)].gameObject);
+            if (!isRandom)
+            {
+                gameObjects[i] = Instantiate(enemyPrefabs[GetPrefabIndexByType(generatingType)].gameObject, spawnPoints[i], transform.rotation);
+            }
+            else
+            {
+                gameObjects[i] = Instantiate(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)].gameObject, spawnPoints[i], transform.rotation);
+            }
         }
-        else
-        {
-            Instantiate(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)].gameObject);
-        }
+
+        return gameObjects;
     }
 
     private int GetPrefabIndexByType(EnemyTypes type)
@@ -48,10 +62,24 @@ public class EnemyGenerator : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        GizmosExtended.DrawWireRectangle2D(transform, spawnAreaWidth, spawnAreaHeigth, Color.white);
-        //GizmosExtended.DrawWireRectangle3D(transform, spawnAreaWidth, spawnAreaHeigth, spawnAreaDepth, Color.white);
-        GizmosExtended.GenerateGridPoints(transform, new Vector3(spawnAreaWidth, 0, spawnAreaHeigth), new Vector3(row, 1, colum));
+        GizmosExtended.DrawWireRectangle2D(transform, spawnAreaWidth, spawnAreaHeight, Color.white);
+        //GizmosExtended.DrawWireRectangle3D(transform, spawnAreaWidth, spawnAreaHeight, 10, Color.white);
         //GizmosExtended.DrawWireEllipse2D(transform, 30, 40, 16, Plane.XZ, Color.white);
         //GizmosExtended.DrawWireEllipse3D(transform, new Vector3(30, 40, 50), 16, Color.white);
+
+        spawnPoints = GeneratorHelper.GenerateGridPoints(transform, spawnAreaWidth, spawnAreaHeight, 0, row, colum, 1);
+
+        foreach (Vector3 point in spawnPoints)
+        {
+            Gizmos.DrawSphere(point, .2f);
+        }
+    }
+
+    private void OnValidate()
+    {
+        if (row < 1) row = 1;
+        if (row > 15) row = 15;
+        if (colum < 1) colum = 1;
+        if (colum > 15) colum = 15;
     }
 }
