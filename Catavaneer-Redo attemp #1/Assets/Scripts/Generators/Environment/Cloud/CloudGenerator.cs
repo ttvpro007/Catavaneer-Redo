@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using ViTiet.Library.ProceduralGenerator.Helper;
-using ViTiet.Library.UnityExtension.Gizmos;
+using ViTiet.ProceduralGenerator.Helper;
+using ViTiet.UnityExtension.Gizmos;
 
 public class CloudGenerator : MonoBehaviour
 {

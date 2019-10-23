@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using ViTiet.Library.UnityExtension.Gizmos;
-using ViTiet.Library.ProceduralGenerator.Helper;
-using Plane = ViTiet.Library.UnityExtension.Math.Plane;
+using ViTiet.UnityExtension.Gizmos;
+using ViTiet.ProceduralGenerator.Helper;
+using Plane = ViTiet.UnityExtension.Math.Plane;
 
 public class EnemyGenerator : MonoBehaviour
 {
@@ -18,7 +18,7 @@ public class EnemyGenerator : MonoBehaviour
 
     private void Start()
     {
-        spawnPoints = GeneratorHelper.GenerateGridPoints(transform, spawnAreaWidth, spawnAreaHeight, 0, row, colum, 1);
+        spawnPoints = GeneratorHelper.GenerateGridPoints3D(transform, spawnAreaWidth, spawnAreaHeight, 0, row, colum, 1);
         enemies = Generate(random);
     }
 
@@ -67,7 +67,7 @@ public class EnemyGenerator : MonoBehaviour
         //GizmosExtended.DrawWireEllipse2D(transform, 30, 40, 16, Plane.XZ, Color.white);
         //GizmosExtended.DrawWireEllipse3D(transform, new Vector3(30, 40, 50), 16, Color.white);
 
-        spawnPoints = GeneratorHelper.GenerateGridPoints(transform, spawnAreaWidth, spawnAreaHeight, 0, row, colum, 1);
+        spawnPoints = GeneratorHelper.GenerateGridPoints3D(transform, spawnAreaWidth, spawnAreaHeight, 0, row, colum, 1);
 
         foreach (Vector3 point in spawnPoints)
         {
